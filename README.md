@@ -1,43 +1,132 @@
-This project uses a machine learning model to predict the calories burned during exercise based on user inputs such as heart rate, exercise duration, weight, height, age, and body temperature.
- Features 
-• User Inputs: Users can input personal details like age, height, weight, exercise duration, heart rate, and body temperature.
-• Model: The project uses the XGBRegressor model to predict the calorie burn based on the provided input data. 
-• Data Scaling: Data is standardized using StandardScaler to improve prediction accuracy.
-• Visualization: Displays an image with a caption to illustrate the application. 
-Data • Calories Data: The target data for calories burned, provided in calories.csv.
-     • Exercise Data: The feature data for each exercise session, provided in exercise.csv.
+# Calorie Prediction Model
 
-1.Data Processing: Loads and scales exercise data. 
-2.Model Training: Trains an XGBoost regression model on the provided data. 
-3.Prediction: Predicts the calorie burn for the user's inputs. 
-4.Display Results: Displays the predicted calories burned. 
+A machine learning regression project that predicts calories burned during exercise using demographic and exercise-related features.
 
-Requirements
- • Python libraries: streamlit, pandas, numpy, scikit-learn, xgboost, PIL
+## Overview
 
-The Dataset used for training the model in colab was taken from kaggle,the zip file consisted of 2 csv files. 
-DATASET LINK : https://www.kaggle.com/datasets/fmendes/fmendesdat263xdemos/data
+This project uses an XGBoost Regressor to estimate calories burned based on:
 
-The Model Training Code can be accessed via Colab Link-: 
-COLAB LINK : https://colab.research.google.com/drive/1jGfin_NBlQiKOnlEZPptPmkB8yKX5XlT?usp=sharing
+- Gender
+- Age
+- Height
+- Weight
+- Exercise Duration
+- Heart Rate
+- Body Temperature
 
-1.TRAINING AND TESTING OF MODEL
-A Brief about the steps followed : for training the model:
-Import Libraries: Import essential Python libraries like pandas, numpy, scikit-learn, xgboost, and streamlit.
-Data Loading: Load the calories.csv and exercise.csv files using pandas to get both the target (calories burned) and feature (exercise details) data.
-Data Preprocessing: Merge Data: Merge the exercise and calories datasets based on the session or user ID for a complete dataset. Standardization: Use StandardScaler to scale features such as heart rate, age, weight, height, exercise duration, and body temperature, which improves model accuracy.
-Model Selection and Training: Model Choice: Choose the XGBRegressor model, a gradient boosting model optimized for regression tasks. Train Model: Train the XGBRegressor on the preprocessed data, using calorie burn as the target variable.
-Prediction: Collect user inputs for personal details and exercise metrics. Use the trained model to predict calories burned based on these inputs.
+The project follows an end-to-end machine learning workflow, including data preprocessing, exploratory data analysis, model training, cross-validation, hyperparameter tuning, and model evaluation. The final trained model is also deployed through a Streamlit web application.
 
-2. DEPLOYMENT 
-Deployment of the model is done on Streamlit,for that on VS Code make a requirements.txt file and in the terminal run the following command 
-' pip install -r requirements.txt ' .
-After that for code you can refer to  ‘ Streamlit_Deployment.py .’  part of this repository.
-Now to run streamlit in a browser run the following command in terminal:
-‘ Streamlit run cpm.py ‘ (#streamlit run filename.py).
+## Dataset
 
-And Voila !,Your project is deployed successfully.
+The project uses two CSV files:
 
+- `exercise.csv` — contains demographic and exercise-related features.
+- `calories.csv` — contains the target variable, calories burned.
 
+The datasets are joined using `User_ID`.
 
+## Machine Learning Workflow
 
+1. Load and inspect the datasets
+2. Check for missing values and duplicates
+3. Merge the datasets using `User_ID`
+4. Encode the categorical `Gender` feature
+5. Perform exploratory data analysis
+6. Separate features and target variable
+7. Split the data into training and testing sets
+8. Train a baseline XGBoost regression model
+9. Evaluate model performance using 5-fold cross-validation
+10. Perform randomized hyperparameter tuning
+11. Evaluate the tuned model on the held-out test set
+12. Compare baseline and tuned model performance
+13. Deploy the trained model using Streamlit
+
+## Model
+
+The project uses **XGBoost Regressor** for the regression task.
+
+Hyperparameter tuning was performed using `RandomizedSearchCV` with 5-fold cross-validation. The search included parameters such as:
+
+- `n_estimators`
+- `max_depth`
+- `learning_rate`
+- `subsample`
+- `colsample_bytree`
+
+## Results
+
+The tuned model was evaluated on the held-out test set.
+
+| Metric | Baseline XGBoost | Tuned XGBoost |
+|---|---:|---:|
+| MAE | 1.498 | 0.938 |
+| RMSE | 2.137 | 1.302 |
+| R² | 0.99887 | 0.99958 |
+
+The tuned model reduced MAE by approximately 37% and RMSE by approximately 39% compared with the baseline model.
+
+## Streamlit Application
+
+The trained model is deployed through a Streamlit application where users can enter their exercise details and receive a predicted calorie expenditure.
+
+The application includes:
+
+- Input validation
+- Trained model loading
+- Real-time prediction
+- Basic error handling
+- Interactive user interface
+
+## Project Structure
+
+```text
+Calorie-Prediction-Model/
+│
+├── app.py
+├── calorie_model.pkl
+├── calories.csv
+├── exercise.csv
+├── burn.png
+├── Calorie-prediction-model.ipynb
+├── requirements.txt
+└── .gitignore
+```
+
+## Technologies Used
+
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- XGBoost
+- Matplotlib
+- Seaborn
+- Streamlit
+- Joblib
+- Jupyter Notebook
+
+## Running the Application
+
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the Streamlit application:
+
+```bash
+streamlit run app.py
+```
+
+The application will open in the browser at the local Streamlit address.
+
+## Key Learning Outcomes
+
+- Data preprocessing and exploratory data analysis
+- Regression modeling with XGBoost
+- Cross-validation
+- Hyperparameter tuning
+- Model evaluation using MAE, RMSE, and R²
+- Model serialization using Joblib
+- Deployment of a machine learning model using Streamlit
